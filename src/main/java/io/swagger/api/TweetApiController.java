@@ -1,5 +1,7 @@
 package io.swagger.api;
 
+import com.blackcodex.demo.spring.twitter.TweetModel;
+import com.blackcodex.demo.spring.twitter.TweetService;
 import io.swagger.model.Tweet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -9,11 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -90,7 +88,23 @@ public class TweetApiController implements TweetApi {
             }
         }
 
-        return new ResponseEntity<Object>(HttpStatus.NOT_IMPLEMENTED);
+        TweetModel t = TweetService.validate(tweetId);
+        if (t == null) {
+            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+        }
+
+        Tweet ts = tweetFromModel(t);
+        return new ResponseEntity<Object>(ts, HttpStatus.OK);
+    }
+
+    private Tweet tweetFromModel(TweetModel t) {
+        Tweet ts = new Tweet();
+        ts.setId((int) t.getId());
+        ts.setUsername(t.getUsername());
+        ts.setText(t.getText());
+        ts.setLocation(t.getLocation());
+        ts.setValidated(t.isValidated());
+        return ts;
     }
 
 }
