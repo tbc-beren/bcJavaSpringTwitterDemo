@@ -1,0 +1,132 @@
+swagger: "2.0"
+info:
+  description: "This is a sample Spring microservice. You can find out more about it in [Github repo](https://github.com/tbc-beren/bcJavaSpringTwitterDemo)."
+  version: "1.0.0"
+  title: "Java Spring Twitter Demo"
+externalDocs:
+  description: "Find out more about this sample"
+  url: "https://github.com/tbc-beren/bcJavaSpringTwitterDemo"
+host: "yourserver.com"
+basePath: "/v1"
+tags:
+- name: "twitter"
+  description: "Tweet related operations"
+schemes:
+- "http"
+
+paths:
+  /tweet:
+    get:
+      tags:
+      - "twitter"
+      summary: "Retrieve the list of tweets"
+      description: "Retrieve the list of tweets"
+      operationId: "tweetEnum"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Tweet"
+  /tweet/{tweetId}/validate:
+    get:
+      tags:
+      - "twitter"
+      summary: "Validates a given tweet"
+      description: "Validates a tweet given its tweetId"
+      operationId: "tweetValidate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "tweetId"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            items:
+              $ref: "#/definitions/Tweet"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Tweet not found"
+  /tweet/findValidatedByUser:
+    get:
+      tags:
+      - "twitter"
+      summary: "Retrieves tweets posted by a given user"
+      description: "Retrieves tweets posted by a given user"
+      operationId: "tweetFindValidatedByUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "Username to retrieve tweets for"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            items:
+              $ref: "#/definitions/Tweet"
+        "404":
+          description: "User not found"
+  /tweet/findHashtag:
+    get:
+      tags:
+      - "twitter"
+      summary: "Retrieves the most used hastags"
+      description: "Retrieves the most used hastags"
+      operationId: "tweetFindHashtag"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "count"
+        in: "query"
+        description: "Number of hashtags to retrieve"
+        required: false
+        type: "integer"
+        default: 10
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            items:
+              type: "string"
+
+definitions:
+  Tweet:
+    type: "object"
+    required:
+    - "username"
+    - "text"
+    properties:
+      id:
+        type: "integer"
+        format: "int"
+      username:
+        type: "string"
+        example: "TwitterDev"
+      text:
+        type: "string"
+        example: "I like the #twitterapi"
+      location:
+        type: "string"
+        example: "42.886914, -5.402779"
+      validated:
+        type: "boolean"
+        default: false
