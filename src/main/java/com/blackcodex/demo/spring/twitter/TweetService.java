@@ -2,11 +2,11 @@ package com.blackcodex.demo.spring.twitter;
 
 import com.blackcodex.demo.spring.twitter.repository.TweetsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Configuration
+@Service
 public class TweetService {
 
     private static TweetService mInstance = null;
@@ -36,6 +36,19 @@ public class TweetService {
                 repo.save(item);
                 return item;
             }
+        } catch(Exception ignored) {
+        }
+        return null;
+    }
+
+    public static TweetModel add(int id, String username, String text) {
+        final TweetsRepository repo = getTweetrepo();
+        if (repo == null) {
+            return null;
+        }
+        try {
+            TweetModel item = new TweetModel(id, username, text, "");
+            repo.save(item);
         } catch(Exception ignored) {
         }
         return null;
