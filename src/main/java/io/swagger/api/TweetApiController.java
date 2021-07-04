@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-07-04T09:08:17.486Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-07-04T19:11:51.709Z")
 
 @Controller
 public class TweetApiController implements TweetApi {
@@ -49,52 +49,52 @@ public class TweetApiController implements TweetApi {
         return new ResponseEntity<List<Tweet>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Object> tweetFindHashtag(@ApiParam(value = "Number of hashtags to retrieve", defaultValue = "10") @Valid @RequestParam(value = "count", required = false, defaultValue="10") Integer count) {
+    public ResponseEntity<List<String>> tweetFindHashtag(@ApiParam(value = "Number of hashtags to retrieve", defaultValue = "10") @Valid @RequestParam(value = "count", required = false, defaultValue="10") Integer count) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Object>(objectMapper.readValue("{  \"bytes\": [],  \"empty\": true}", Object.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<List<String>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<List<String>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<List<String>>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<List<Tweet>> tweetFindValidatedByUser(@NotNull @ApiParam(value = "Username to retrieve tweets for", required = true) @Valid @RequestParam(value = "username", required = true) String username) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                return new ResponseEntity<List<Tweet>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<List<Tweet>>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
         return new ResponseEntity<Object>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Object> tweetFindValidatedByUser(@NotNull @ApiParam(value = "Username to retrieve tweets for", required = true) @Valid @RequestParam(value = "username", required = true) List<String> username) {
+    public ResponseEntity<Tweet> tweetValidate(@ApiParam(value = "",required=true) @PathVariable("tweetId") Long tweetId) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Object>(objectMapper.readValue("{  \"bytes\": [],  \"empty\": true}", Object.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Tweet>(objectMapper.readValue("{\"empty\": false}", Tweet.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<Object>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    public ResponseEntity<Object> tweetValidate(@ApiParam(value = "",required=true) @PathVariable("tweetId") Long tweetId) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Object>(objectMapper.readValue("{  \"bytes\": [],  \"empty\": true}", Object.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Tweet>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
         TweetModel t = TweetService.validate(tweetId);
         if (t == null) {
-            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Tweet>(HttpStatus.NOT_FOUND);
         }
 
         Tweet ts = tweetFromModel(t);
-        return new ResponseEntity<Object>(ts, HttpStatus.OK);
+        return new ResponseEntity<Tweet>(ts, HttpStatus.OK);
     }
 
     private Tweet tweetFromModel(TweetModel t) {

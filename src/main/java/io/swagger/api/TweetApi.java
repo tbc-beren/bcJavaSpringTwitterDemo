@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-07-04T09:08:17.486Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-07-04T19:11:51.709Z")
 
 @Validated
 @Api(value = "tweet", description = "the tweet API")
@@ -37,35 +37,33 @@ public interface TweetApi {
     ResponseEntity<List<Tweet>> tweetEnum();
 
 
-    @ApiOperation(value = "Retrieves the most used hastags", nickname = "tweetFindHashtag", notes = "Retrieves the most used hastags", response = Object.class, tags={ "twitter", })
+    @ApiOperation(value = "Retrieves the most used hastags", nickname = "tweetFindHashtag", notes = "Retrieves the most used hastags", response = String.class, responseContainer = "List", tags={ "twitter", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Object.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = String.class, responseContainer = "List") })
     @RequestMapping(value = "/tweet/findHashtag",
         produces = { "application/json" }, 
-        consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<Object> tweetFindHashtag(@ApiParam(value = "Number of hashtags to retrieve", defaultValue = "10") @Valid @RequestParam(value = "count", required = false, defaultValue="10") Integer count);
+    ResponseEntity<List<String>> tweetFindHashtag(@ApiParam(value = "Number of hashtags to retrieve", defaultValue = "10") @Valid @RequestParam(value = "count", required = false, defaultValue="10") Integer count);
 
 
-    @ApiOperation(value = "Retrieves tweets posted by a given user", nickname = "tweetFindValidatedByUser", notes = "Retrieves tweets posted by a given user", response = Object.class, tags={ "twitter", })
+    @ApiOperation(value = "Retrieves tweets posted by a given user", nickname = "tweetFindValidatedByUser", notes = "Retrieves tweets posted by a given user", response = Tweet.class, responseContainer = "List", tags={ "twitter", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Object.class),
+        @ApiResponse(code = 200, message = "successful operation", response = Tweet.class, responseContainer = "List"),
         @ApiResponse(code = 404, message = "User not found") })
     @RequestMapping(value = "/tweet/findValidatedByUser",
         produces = { "application/json" }, 
-        consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<Object> tweetFindValidatedByUser(@NotNull @ApiParam(value = "Username to retrieve tweets for", required = true) @Valid @RequestParam(value = "username", required = true) List<String> username);
+    ResponseEntity<List<Tweet>> tweetFindValidatedByUser(@NotNull @ApiParam(value = "Username to retrieve tweets for", required = true) @Valid @RequestParam(value = "username", required = true) String username);
 
 
-    @ApiOperation(value = "Validates a given tweet", nickname = "tweetValidate", notes = "Validates a tweet given its tweetId", response = Object.class, tags={ "twitter", })
+    @ApiOperation(value = "Validates a given tweet", nickname = "tweetValidate", notes = "Validates a tweet given its tweetId", response = Tweet.class, tags={ "twitter", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Object.class),
+        @ApiResponse(code = 200, message = "successful operation", response = Tweet.class),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "Tweet not found") })
     @RequestMapping(value = "/tweet/{tweetId}/validate",
         produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<Object> tweetValidate(@ApiParam(value = "",required=true) @PathVariable("tweetId") Long tweetId);
+        method = RequestMethod.PUT)
+    ResponseEntity<Tweet> tweetValidate(@ApiParam(value = "",required=true) @PathVariable("tweetId") Long tweetId);
 
 }

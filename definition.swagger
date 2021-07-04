@@ -32,7 +32,7 @@ paths:
             items:
               $ref: "#/definitions/Tweet"
   /tweet/{tweetId}/validate:
-    get:
+    put:
       tags:
       - "twitter"
       summary: "Validates a given tweet"
@@ -50,8 +50,7 @@ paths:
         "200":
           description: "successful operation"
           schema:
-            items:
-              $ref: "#/definitions/Tweet"
+            $ref: "#/definitions/Tweet"
         "400":
           description: "Invalid ID supplied"
         "404":
@@ -63,8 +62,6 @@ paths:
       summary: "Retrieves tweets posted by a given user"
       description: "Retrieves tweets posted by a given user"
       operationId: "tweetFindValidatedByUser"
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
       parameters:
@@ -72,13 +69,12 @@ paths:
         in: "query"
         description: "Username to retrieve tweets for"
         required: true
-        type: "array"
-        items:
-          type: "string"
+        type: "string"
       responses:
         "200":
           description: "successful operation"
           schema:
+            type: "array"
             items:
               $ref: "#/definitions/Tweet"
         "404":
@@ -90,8 +86,6 @@ paths:
       summary: "Retrieves the most used hastags"
       description: "Retrieves the most used hastags"
       operationId: "tweetFindHashtag"
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
       parameters:
@@ -105,6 +99,7 @@ paths:
         "200":
           description: "successful operation"
           schema:
+            type: "array"
             items:
               type: "string"
 
