@@ -18,6 +18,8 @@ public class TweetFeeder {
     @Autowired
     Environment mEnv;
 
+    boolean mEnabled = true;
+
     @Bean(name = "TweetFeeder")
     public void init() {
         mInstance = this;
@@ -51,9 +53,17 @@ public class TweetFeeder {
         return result;
     }
 
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
+    }
+
     StatusListener mListener = new StatusListener(){
         public void onStatus(Status status) {
             GeoLocation location = status.getGeoLocation();
+
+            if (!mEnabled) {
+                return;
+            }
 
             // Filter by follower count
             if (status.getUser().getFollowersCount() < getMinFollowerCount()) {
