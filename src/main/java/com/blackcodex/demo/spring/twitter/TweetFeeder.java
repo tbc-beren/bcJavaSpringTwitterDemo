@@ -1,6 +1,5 @@
 package com.blackcodex.demo.spring.twitter;
 
-import io.swagger.model.Tweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -19,7 +18,6 @@ public class TweetFeeder {
     @Autowired
     Environment mEnv;
 
-    @Autowired
     @Bean(name = "TweetFeeder")
     public void init() {
         mInstance = this;
