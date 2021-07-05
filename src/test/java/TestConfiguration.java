@@ -1,4 +1,8 @@
-package PACKAGE_NAME;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-public class TestController {
+@Configuration
+@ComponentScan("io.swagger.api")
+@ComponentScan("com.blackcodex.demo.spring.twitter")
+public class TestConfiguration {
 }

@@ -17,6 +17,7 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-07-04T19:11:51.709Z")
 
@@ -74,7 +75,9 @@ public class TweetApiController implements TweetApi {
             }
         }
 
-        return new ResponseEntity<Object>(HttpStatus.NOT_IMPLEMENTED);
+        final List<TweetModel> dataList = TweetService.queryValidatedByUser(username);
+        final List<Tweet> resultList = tweetListFromModel(dataList);
+        return new ResponseEntity<List<Tweet>>(resultList, HttpStatus.OK);
     }
 
     public ResponseEntity<Tweet> tweetValidate(@ApiParam(value = "",required=true) @PathVariable("tweetId") Long tweetId) {
@@ -88,23 +91,31 @@ public class TweetApiController implements TweetApi {
             }
         }
 
-        TweetModel t = TweetService.validate(tweetId);
-        if (t == null) {
+        final TweetModel tweetModel = TweetService.validate(tweetId);
+        if (tweetModel == null) {
             return new ResponseEntity<Tweet>(HttpStatus.NOT_FOUND);
         }
 
-        Tweet ts = tweetFromModel(t);
-        return new ResponseEntity<Tweet>(ts, HttpStatus.OK);
+        final Tweet result = tweetFromModel(tweetModel);
+        return new ResponseEntity<Tweet>(result, HttpStatus.OK);
     }
 
-    private Tweet tweetFromModel(TweetModel t) {
-        Tweet ts = new Tweet();
-        ts.setId((int) t.getId());
-        ts.setUsername(t.getUsername());
-        ts.setText(t.getText());
-        ts.setLocation(t.getLocation());
-        ts.setValidated(t.isValidated());
-        return ts;
+    private Tweet tweetFromModel(TweetModel tweetSrc) {
+        Tweet tweet = new Tweet();
+        tweet.setId((int) tweetSrc.getId());
+        tweet.setUsername(tweetSrc.getUsername());
+        tweet.setText(tweetSrc.getText());
+        tweet.setLocation(tweetSrc.getLocation());
+        tweet.setValidated(tweetSrc.isValidated());
+        return tweet;
+    }
+    private List<Tweet> tweetListFromModel(List<TweetModel> tweetList) {
+        List<Tweet> resultList = new ArrayList<>();
+        for (TweetModel tweet : tweetList) {
+            Tweet tweetModel = tweetFromModel(tweet);
+            resultList.add(tweetModel);
+        }
+        return resultList;
     }
 
 }
