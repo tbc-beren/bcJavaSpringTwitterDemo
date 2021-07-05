@@ -1,5 +1,6 @@
 package com.blackcodex.demo.spring.twitter;
 
+import io.swagger.model.Tweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -73,6 +74,8 @@ public class TweetFeeder {
                     status.getText(),
                     location == null ? "" : location.toString()
             );
+
+            TweetDataService.add(tweet);
 
             String tweetLog = String.format("New tweet: [%s][%s]", tweet.getUsername(), tweet.getText());
             System.out.println("_______________________________________________________");

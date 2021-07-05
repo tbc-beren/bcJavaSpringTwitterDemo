@@ -55,11 +55,15 @@ public class TweetDataService {
     }
 
     public static TweetModel add(String username, String text) {
+        TweetModel item = new TweetModel(username, text, "");
+        return add(item);
+    }
+
+    public static TweetModel add(TweetModel tweet) {
         final TweetsRepository repo = getTweetrepo();
         try {
-            TweetModel item = new TweetModel(username, text, "");
-            repo.save(item);
-            return item;
+            repo.save(tweet);
+            return tweet;
         } catch(Exception ignored) {
         }
         return null;
