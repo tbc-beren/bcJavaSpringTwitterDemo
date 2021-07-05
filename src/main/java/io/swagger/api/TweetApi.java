@@ -6,6 +6,7 @@
 package io.swagger.api;
 
 import io.swagger.model.Tweet;
+import io.swagger.model.TweetState;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-07-04T19:11:51.709Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-07-05T12:48:52.974Z")
 
 @Validated
 @Api(value = "tweet", description = "the tweet API")
@@ -54,6 +55,16 @@ public interface TweetApi {
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<List<Tweet>> tweetFindValidatedByUser(@NotNull @ApiParam(value = "Username to retrieve tweets for", required = true) @Valid @RequestParam(value = "username", required = true) String username);
+
+
+    @ApiOperation(value = "Sets twitter livestream on or off", nickname = "tweetLiveStream", notes = "Sets twitter livestream on or off", response = TweetState.class, tags={ "twitter", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = TweetState.class),
+        @ApiResponse(code = 400, message = "Invalid ID supplied") })
+    @RequestMapping(value = "/tweet/livestream",
+        produces = { "application/json" }, 
+        method = RequestMethod.PUT)
+    ResponseEntity<TweetState> tweetLiveStream(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "enabled", required = true) Boolean enabled);
 
 
     @ApiOperation(value = "Validates a given tweet", nickname = "tweetValidate", notes = "Validates a tweet given its tweetId", response = Tweet.class, tags={ "twitter", })

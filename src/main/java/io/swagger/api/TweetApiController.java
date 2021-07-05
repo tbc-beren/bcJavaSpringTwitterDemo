@@ -1,8 +1,10 @@
 package io.swagger.api;
 
+import com.blackcodex.demo.spring.twitter.TweetFeeder;
 import com.blackcodex.demo.spring.twitter.TweetModel;
 import com.blackcodex.demo.spring.twitter.TweetDataService;
 import io.swagger.model.Tweet;
+import io.swagger.model.TweetState;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-07-04T19:11:51.709Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-07-05T12:48:52.974Z")
 
 @Controller
 public class TweetApiController implements TweetApi {
@@ -36,6 +38,7 @@ public class TweetApiController implements TweetApi {
         this.request = request;
     }
 
+    @Override
     public ResponseEntity<List<Tweet>> tweetEnum() {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
@@ -56,6 +59,7 @@ public class TweetApiController implements TweetApi {
         return new ResponseEntity<List<Tweet>>(result, HttpStatus.OK);
     }
 
+    @Override
     public ResponseEntity<List<String>> tweetFindHashtag(@ApiParam(value = "Number of hashtags to retrieve", defaultValue = "10") @Valid @RequestParam(value = "count", required = false, defaultValue="10") Integer count) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
@@ -70,6 +74,7 @@ public class TweetApiController implements TweetApi {
         return new ResponseEntity<List<String>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    @Override
     public ResponseEntity<List<Tweet>> tweetFindValidatedByUser(@NotNull @ApiParam(value = "Username to retrieve tweets for", required = true) @Valid @RequestParam(value = "username", required = true) String username) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
@@ -86,6 +91,16 @@ public class TweetApiController implements TweetApi {
         return new ResponseEntity<List<Tweet>>(resultList, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<TweetState> tweetLiveStream(@NotNull @Valid Boolean enabled) {
+        TweetFeeder.instance().setEnabled(enabled);
+        
+        TweetState state = new TweetState();
+        state.setEnabled(enabled);
+        return new ResponseEntity<TweetState>(state, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Tweet> tweetValidate(@ApiParam(value = "",required=true) @PathVariable("tweetId") Long tweetId) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
