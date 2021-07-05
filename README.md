@@ -1,5 +1,5 @@
 # bcJavaSpringTwitterDemo
-Spring Demostration project on Microservices, H2 database and twitter API access.
+Spring Demonstration project on Microservices, H2 database and twitter API access.
 
 Reads Twitter samples (Random tweets) to analyze the global feeling of Twitter. The tweets gets stored in the service for later processing.
 
