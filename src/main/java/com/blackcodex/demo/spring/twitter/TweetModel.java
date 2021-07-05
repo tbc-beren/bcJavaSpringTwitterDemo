@@ -26,13 +26,18 @@ public class TweetModel {
         mValidated = false;
     }
 
-    public TweetModel(long id, String user, String text, String location) {
+    public TweetModel(String user, String text, String location) {
         this();
 
-        mId = id;
         mUsername = user;
         mText = text;
         mLocation = location;
+    }
+
+    public TweetModel(long id, String user, String text, String location) {
+        this(user, text, location);
+
+        mId = id;
     }
 
     public long getId() {

@@ -24,11 +24,23 @@ public class TweetDataService {
         return mInstance.mTweetsRepo;
     }
 
+    public static void deleteAll() {
+        final TweetsRepository repo = getTweetrepo();
+        if (repo != null) {
+            repo.deleteAll();
+        }
+    }
+
+    public static List<TweetModel> enumAll() {
+        final TweetsRepository repo = getTweetrepo();
+        try {
+            return repo.enumAll();
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
     public static TweetModel validate(long tweetId) {
         final TweetsRepository repo = getTweetrepo();
-        if (repo == null) {
-            return null;
-        }
         try {
             Optional<TweetModel> optItem = repo.findById(tweetId);
             if (optItem.isPresent()) {
@@ -42,13 +54,10 @@ public class TweetDataService {
         return null;
     }
 
-    public static TweetModel add(int id, String username, String text) {
+    public static TweetModel add(String username, String text) {
         final TweetsRepository repo = getTweetrepo();
-        if (repo == null) {
-            return null;
-        }
         try {
-            TweetModel item = new TweetModel(id, username, text, "");
+            TweetModel item = new TweetModel(username, text, "");
             repo.save(item);
             return item;
         } catch(Exception ignored) {
@@ -63,5 +72,11 @@ public class TweetDataService {
         } catch (Exception ignored) {
         }
         return null;
+    }
+
+    public TweetsRepository setTweetsRepository(TweetsRepository newRepo) {
+        TweetsRepository old = mTweetsRepo;
+        mTweetsRepo = newRepo;
+        return old;
     }
 }

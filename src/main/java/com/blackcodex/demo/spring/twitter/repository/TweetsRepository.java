@@ -10,4 +10,7 @@ import java.util.List;
 public interface TweetsRepository extends CrudRepository<TweetModel, Long> {
     @Query(value="select * from Tweets where validated=TRUE and username=?1", nativeQuery = true)
     List<TweetModel> find(@Param("username") String username);
+
+    @Query(value="select * from Tweets", nativeQuery = true)
+    List<TweetModel> enumAll();
 }

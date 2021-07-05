@@ -47,7 +47,13 @@ public class TweetApiController implements TweetApi {
             }
         }
 
-        return new ResponseEntity<List<Tweet>>(HttpStatus.NOT_IMPLEMENTED);
+        final List<TweetModel> tweetModel = TweetDataService.enumAll();
+        if (tweetModel == null) {
+            return new ResponseEntity<List<Tweet>>(HttpStatus.NOT_FOUND);
+        }
+
+        final List<Tweet> result = tweetListFromModel(tweetModel);
+        return new ResponseEntity<List<Tweet>>(result, HttpStatus.OK);
     }
 
     public ResponseEntity<List<String>> tweetFindHashtag(@ApiParam(value = "Number of hashtags to retrieve", defaultValue = "10") @Valid @RequestParam(value = "count", required = false, defaultValue="10") Integer count) {
