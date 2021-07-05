@@ -7,30 +7,32 @@ import javax.persistence.*;
 public class TweetModel {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
-    long mId;
+    @Column(name = "id", updatable = false, nullable = false)
+    private long mId;
 
     @Column(name = "username", columnDefinition="VARCHAR")
-    String mUsername ="";
+    private String mUsername ="";
 
     @Column(name = "text", columnDefinition="LONGTEXT")
-    String mText = "";
+    private String mText = "";
 
     @Column(name = "location", columnDefinition="VARCHAR")
-    String mLocation = "";
+    private String mLocation = "";
 
     @Column(name = "validated")
     boolean mValidated;
 
     public TweetModel() {
+        mValidated = false;
     }
 
     public TweetModel(long id, String user, String text, String location) {
+        this();
+
         mId = id;
         mUsername = user;
         mText = text;
         mLocation = location;
-        mValidated = false;
     }
 
     public long getId() {
