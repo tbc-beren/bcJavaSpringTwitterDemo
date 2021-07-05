@@ -1,5 +1,5 @@
 import com.blackcodex.demo.spring.twitter.TweetModel;
-import com.blackcodex.demo.spring.twitter.TweetService;
+import com.blackcodex.demo.spring.twitter.TweetDataService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,9 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfiguration.class})
 @WebAppConfiguration
-public class testTweetService {
+public class TestTweetDataService {
     @Autowired
-    TweetService mService;
+    TweetDataService mService;
 
     @Test
     public void testTweetValidation() {

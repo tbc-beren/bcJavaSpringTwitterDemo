@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TweetService {
+public class TweetDataService {
 
-    private static TweetService mInstance = null;
+    private static TweetDataService mInstance = null;
 
     @Autowired
     private TweetsRepository mTweetsRepo;

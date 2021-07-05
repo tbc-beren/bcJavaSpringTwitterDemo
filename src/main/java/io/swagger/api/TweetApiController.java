@@ -1,7 +1,7 @@
 package io.swagger.api;
 
 import com.blackcodex.demo.spring.twitter.TweetModel;
-import com.blackcodex.demo.spring.twitter.TweetService;
+import com.blackcodex.demo.spring.twitter.TweetDataService;
 import io.swagger.model.Tweet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -75,7 +75,7 @@ public class TweetApiController implements TweetApi {
             }
         }
 
-        final List<TweetModel> dataList = TweetService.queryValidatedByUser(username);
+        final List<TweetModel> dataList = TweetDataService.queryValidatedByUser(username);
         final List<Tweet> resultList = tweetListFromModel(dataList);
         return new ResponseEntity<List<Tweet>>(resultList, HttpStatus.OK);
     }
@@ -91,7 +91,7 @@ public class TweetApiController implements TweetApi {
             }
         }
 
-        final TweetModel tweetModel = TweetService.validate(tweetId);
+        final TweetModel tweetModel = TweetDataService.validate(tweetId);
         if (tweetModel == null) {
             return new ResponseEntity<Tweet>(HttpStatus.NOT_FOUND);
         }
